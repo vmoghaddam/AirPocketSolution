@@ -1,0 +1,125 @@
+﻿<style>
+    .lib-report {
+        background: white;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 2px;
+        padding-left: 2px;
+        margin: 5px 5px 0 5px;
+        border: 1px solid #bbb;
+        transition: background 0.4s;
+    }
+    .rptitem{
+        padding:10px;
+        border-bottom:1px solid #ddd;
+    }
+    .dx-popup-title.dx-toolbar .dx-toolbar-item:last-child {
+        max-width: 300px !important;
+    }
+</style>
+<div style="height:100%;">
+    <div class="box reports maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#fff; ">
+
+
+            <div id="scrollviewreports" dx-scroll-view="scroll_reports">
+                <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important;padding:5px 10px" class="lib-report">
+                    <div class="rptitem" ng-click="showFilter(1)"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i><span style="font-weight:bold">Flights</span></div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i>General Logbook</div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i>General 7 Row Logbook</div>
+                    <div class="rptitem" ng-click="showFilter()"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i><span style="font-weight:normal">EASA-FCL Compliant 16</span></div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i>EASA-FCL Compliant 18</div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i>EASA-FCL Compliant 20</div>
+                    <div class="rptitem" style="border-bottom:none"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#4da6ff"></i>EASA-FCL Compliant 26</div>
+                </div>
+                <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important;padding:5px 10px" class="lib-report">
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#00e6ac"></i>Duties</div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#00e6ac"></i>Flight Duties</div>
+                    <div class="rptitem"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#00e6ac"></i>Office Duties</div>
+                    <div class="rptitem" style="border-bottom:none"><i class="fas fa-file-alt" style="display:inline-block;margin-right:5px;font-size:16px;color:#00e6ac"></i>Training Duties</div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'reports';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+
+
+
+    <div id="popup_filter" dx-popup="popup_filter">
+        <div dx-scroll-view="{height:'100%'}">
+            <div class="dx-border">
+
+
+                <div class="margin-bottom-5 padding-7   ">
+                    <label>To</label>
+                    <div dx-date-box="filter_to" class="center" dx-validator="{validationGroup:'reportfilter',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+                <div class="margin-bottom-5" style="padding:0;text-align:center">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-xsm-3" style="padding:3px;">
+                        <div style="background:#ddd;border:1px solid #ccc;padding:4px;font-size:12px" ng-click="periodClick(7)">7 Days</div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-xsm-3" style="padding:3px;" ng-click="periodClick(14)">
+                        <div style="background:#ddd;border:1px solid #ccc;padding:4px;font-size:12px">14 Days</div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-xsm-3" style="padding:3px;" ng-click="periodClick(28)">
+                        <div style="background:#ddd;border:1px solid #ccc;padding:4px;font-size:12px">28 Days</div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-xsm-3" style="padding:3px;" ng-click="periodClick(12)">
+                        <div style="background:#ddd;border:1px solid #ccc;padding:4px;font-size:12px">12 Months</div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="margin-bottom-5 padding-7    ">
+                    <label>From</label>
+                    <div dx-date-box="filter_from" class="center" dx-validator="{validationGroup:'reportfilter',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+
+                <div style="clear:both"></div>
+                <div style="border-bottom:1px solid #ccc;padding:10px 10px 5px 10px">Route</div>
+                <div class="margin-bottom-5 padding-7 col-lg-6 col-xs-6 col-sm-6 col-md-6 col-xsm-6   ">
+                    <label>From</label>
+                    <div dx-select-box="sb_filterfrom"></div>
+
+                </div>
+                <div class="margin-bottom-5 padding-7 col-lg-6 col-xs-6 col-sm-6 col-md-6 col-xsm-6   ">
+                    <label>To</label>
+                    <div dx-select-box="sb_filterto"></div>
+
+                </div>
+                <div style="clear:both"></div>
+                <div style="border-bottom:1px solid #ccc;padding:0px 10px 5px 10px"></div>
+                <div class="margin-bottom-5 padding-7 col-lg-6   col-sm-6 col-md-6     ">
+                    <label>Airline</label>
+                    <div dx-select-box="sb_filterairline"></div>
+
+                </div>
+                <!--<div class="margin-bottom-5 padding-7 col-lg-6  col-sm-6 col-md-6     ">
+                    <label>Status</label>
+                    <div dx-select-box="sb_filterstatus"></div>
+
+                </div>-->
+                <div style="clear:both"></div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <div dx-load-panel="loadPanel"></div>
+
+
+</div>

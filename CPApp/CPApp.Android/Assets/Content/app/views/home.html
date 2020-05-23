@@ -1,0 +1,628 @@
+﻿<style>
+    .speed-value {
+        position: absolute;
+        border: 2px solid #f05b41;
+        border-radius: 50%;
+        width: 110px;
+        height: 110px;
+        left: 28%;
+        top: 36%;
+        line-height: 100px;
+    }
+
+        .speed-value > span {
+            font-size: 50px;
+            font-weight: lighter;
+            color: #f05b41;
+        }
+
+    .gray .dx-tab {
+        background-color: darkgray;
+    }
+
+    .lib-flight {
+        border: 1px solid #ccc;
+        /*margin: 4px 6px 0 6px;*/
+        /*padding:20px !important;*/
+        display: block;
+        background-color: cornsilk;
+    }
+
+    #scheduler-xs .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-date-table-cell {
+        height: 50px !important;
+    }
+    /*.dx-item.dx-scheduler-appointment.dx-scheduler-appointment-horizontal{
+        width:25px !important;
+        height:25px !important;
+        border-radius:50%;
+
+
+    }*/
+    .accordion {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 7px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+    }
+
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .accordion:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+    .active:after {
+        content: "\2212";
+    }
+
+    .panel {
+        padding: 0 0px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
+
+    .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-date-table-cell > div {
+        font-size: 12px;
+        padding: 4px !important;
+    }
+
+    .dx-item.dx-scheduler-appointment.dx-scheduler-appointment-horizontal.dx-resizable.dx-draggable {
+        height: 26px !important;
+        top: -7px !important;
+    }
+
+    .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-appointment-content {
+        padding-top: 0 !important;
+    }
+
+    .scheduled {
+        color: #ffd480 !important;
+    }
+
+    .boarding {
+        color: #ff66ff !important;
+    }
+
+    .start {
+        color: #80ffff !important;
+    }
+
+    .taxi {
+        color: #00b3b3 !important;
+    }
+
+    .departed {
+        color: #00ff00 !important;
+    }
+
+    .offblocked {
+        color: #80ffff !important;
+    }
+
+    .onblocked {
+        color: #66b3ff !important;
+    }
+
+
+
+    .arrived {
+        color: #99ccff !important;
+    }
+
+    .canceled {
+        color: #808080 !important;
+    }
+
+    .delay {
+        color: #ff0000 !important;
+    }
+
+    .inactive {
+        color: #cccccc !important;
+    }
+
+    .diverted {
+        color: #e6e600 !important;
+    }
+
+    .redirect {
+        color: #e6e600 !important;
+    }
+
+    .ground {
+        color: #ff8000 !important;
+    }
+
+    .nodata {
+        color: #787878 !important;
+    }
+
+    .returntoramp {
+        color: #9900cc !important;
+    }
+
+    .selected {
+        background: #e6e6e6 !important;
+    }
+</style>
+<div style="height:100%;">
+    <div class="box home maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+
+
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html?v=100'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#f0f3f5; ">
+            <div id="scrollviewhome" dx-scroll-view="scroll_main">
+                <div style="padding-top:3px;padding-right:5px;padding-left:5px">
+                    <div style="text-align:left;padding:5px 0 5px 20px;font-size:16px;background:#ccc" ng-show="ds_nextFlights && ds_nextFlights.length>0"><i class="fa fa-plane" style="font-size:18px;color:red;position:relative;top:1px;" ></i>  Next Coming Flight</div>
+
+                    <!--Next Flight-->
+
+                    <div style="padding-top:8px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-sm hidden-lg hidden-md" ng-repeat="x in ds_nextFlights">
+                        <div style="float:left;width:15%;">
+                            <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                            <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+
+                        </div>
+                        <div style="float:left;width:85%; padding-top:1px;">
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <!--row2-->
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div style="clear:both"></div>
+                        <div ng-show="x.NightTakeOff || x.DayTakeOff || x.DayLanding || x.NightLanding" style="border-top:0px dashed #ccc;margin:5px;padding-top:3px;">
+                            <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.DayTakeOff">
+                                <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Day</span>
+                            </div>
+                            <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.NightTakeOff">
+                                <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Night</span>
+                            </div>
+
+                            <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.DayLanding">
+                                <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Day </span>
+                            </div>
+                            <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.NightLanding">
+                                <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Night </span>
+                            </div>
+
+                            <div style="clear:both"></div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                            <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                <i ng-class="getStatusClass(x)"></i>
+                                <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                            </div>
+                            <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                <i style="color:gray" class="fa fa-plane"></i>
+                                <span>{{x.Register}}</span>
+                                <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                <span>{{x.Airline}}</span>
+
+                            </div>
+                            <div style="clear:both"></div>
+
+
+                        </div>
+
+                    </div>
+                    <!--lg-->
+                    <div style="padding-top:8px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-xs" ng-repeat="x in ds_nextFlights">
+                        <div style="float:left;width:17%;border-right:1px dotted gray;margin-top:2px;padding:5px 0 5px 0;">
+                            <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                            <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div style="float:left;width:66%; padding-top:1px;margin-top:2px;border-right:1px dotted gray">
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <!--row2-->
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div style="float:right;width:17%; margin-top:2px;padding:5px 0 5px 0;">
+                            <div style=" text-align:center;padding:5px;" ng-show="x.DayTakeOff">
+                                <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Day</span>
+                            </div>
+                            <div style=" text-align:center;padding:5px;" ng-show="x.NightTakeOff">
+                                <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Night</span>
+                            </div>
+
+                            <div style=" text-align:center;padding:5px;" ng-show="x.DayLanding">
+                                <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Day </span>
+                            </div>
+                            <div style="  text-align:center;padding:5px;" ng-show="x.NightLanding">
+                                <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Night </span>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div style="clear:both"></div>
+
+                        <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                            <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                <i ng-class="getStatusClass(x)"></i>
+                                <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                            </div>
+                            <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                <i style="color:gray" class="fa fa-plane"></i>
+                                <span>{{x.Register}}</span>
+                                <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                <span>{{x.Airline}}</span>
+
+                            </div>
+                            <div style="clear:both"></div>
+
+
+                        </div>
+
+                    </div>
+                    <!--End of Next Flight-->
+                    <div style="clear:both"></div>
+
+
+
+
+                    <div style="background:white;border:1px solid #ccc;margin:5px 0 5px 0">
+                        <!-- <div>Duty</div>-->
+                        <div style="text-align:left;padding:15px 0 0 20px;font-size:16px;">Duty</div>
+                        <div dx-bar-gauge="dutyGauge"></div>
+                        <div style="text-align:center;padding-bottom:10px;">
+                            <i ng-style="d7style" class="fa fa-square"></i>
+                            <span style="font-size:13px">7d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d7}}</span>
+                            <i ng-style="d14style" class="fa fa-square"></i>
+                            <span style="font-size:13px">14d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d14}}</span>
+                            <i ng-style="d28style" class="fa fa-square"></i>
+                            <span style="font-size:13px">28d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d28}}</span>
+                        </div>
+                    </div>
+
+                    <!--FTL Flight-->
+                    <div style="background:white;border:1px solid #ccc;margin:5px 0 5px 0">
+                        <div style="text-align:left;padding:15px 0 0 20px;font-size:16px;">Flight</div>
+                        <div>
+                            <div dx-bar-gauge="yflightGauge"></div>
+                            <div style="text-align:center;padding-bottom:10px;margin-top:10px">
+                                <i ng-style="yfstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">12m:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{yf}}</span>
+                                <i ng-style="cyfstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">Year:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{cyf}}</span>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div dx-bar-gauge="flightGauge"></div>
+                            <div style="text-align:center;padding-bottom:10px;margin-top:10px">
+                                <i ng-style="fstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">28d:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{f}}</span>
+
+
+                            </div>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!--<div class="applibraryitem" style="padding:2px 0px 5px 0px;height:300px" ng-show="IsNotificationVisible" ng-click="alertAction(1000)">
+        <div class="card text-black-50  bg-white" style="margin:0; padding:10px;display:block;">
+            <div class="center-section">
+                <div id="speed-gauge" dx-circular-gauge="options.speed"></div>
+                 <div class="speed-value">
+                    <span>{{speedValue}}</span>
+                </div>
+
+            </div>
+        </div>
+    </div>-->
+                    <!--<div class="applibraryitem" style="padding:2px 0px 5px 0px;" ng-show="IsNotificationVisible" ng-click="alertAction(1000)">
+        <div class="card text-black-50  bg-white" style="margin:0; padding:10px 7px 10px 0px;display:block;height:110px">
+            <div class="col-lg-11 col-md-10 col-sm-10 col-xs-10">
+                <div style="font-size:16px" ng-bind-html="notTitle"> </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs" style="margin-top:5px" ng-bind-html="notSenderDate"></div>
+                <div class="hidden-lg hidden-md hidden-sm" style="margin-top:5px" ng-bind-html="notSender"></div>
+                <div class="hidden-lg hidden-md hidden-sm" style="margin-top:5px" ng-bind-html="notDate"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs" style="margin-top:5px" ng-bind-html="notAbs"></div>
+            </div>
+            <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2" style="text-align:center">
+                <i style="font-size:40px;line-height:70px" class="fas fa-comment text-red"></i>
+            </div>
+
+            <div style="clear:both"></div>
+
+        </div>
+    </div>-->
+
+
+
+                    <div style="clear:both"></div>
+                    <div style="background:white;border:1px solid #ccc;margin:0px 0 5px 0;padding-bottom:5px" ng-show="IsMemosVisible">
+                        <div style="text-align:left;padding:5px 0 5px 20px;font-size:16px;background:#ccc"><i class="fas fa-sticky-note" style="font-size:18px;color:red;position:relative;top:1px;"></i>  Memos</div>
+                        <div class="  applibraryitem" style="padding:2px 3px 5px 3px;" ng-repeat="x in memo" ng-click="alertAction(x.Type)">
+                            <div class="card text-black-50  bg-white" style="margin:0px 10px 0 17px; padding:5px 7px 5px 0px;display:block;height:60px;border:none;border-bottom:1px dashed gray">
+                                <div class="col-lg-9 col-md-10 col-sm-10 col-xs-10" style="padding-right:0">
+                                    <div style="font-weight:bold;font-size:16px">{{x.Total}}</div>
+                                    <div style="margin-top:5px"><span style="display:inline-block;font-weight:bold">{{x.Caption}}</span><span style="display:inline-block;padding-left:5px;font-size:13px">{{x.Remark}}</span></div>
+                                </div>
+                                <div class="col-lg-3 col-md-2 col-sm-2 col-xs-2" style="text-align:center; ">
+                                    <i style="font-size:30px;position:relative;top:5px;" ng-class="x.icon"></i>
+                                </div>
+
+                                <div style="clear:both"></div>
+
+                            </div>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <!--CERTIFICATES ALERTS-->
+                    <div style="background:white;border:1px solid #ccc;margin:5px 0 5px 0;padding-bottom:5px" ng-show="IsPersonalDocumentVisible">
+                        <div style="text-align:left;padding:5px 0 5px 20px;font-size:16px;background:#ccc"><i class="fas fa-award" style="font-size:18px;color:red;position:relative;top:1px;"></i> Certificates</div>
+                        <div id="persoanllic">
+
+                        </div>
+                    </div>
+
+                    <!--<div style="padding:7px;border-bottom:1px solid #ccc;border-top:1px solid #ccc;color:gray;background:white;margin-bottom:2px;" ng-show="IsPersonalDocumentVisible">
+        Certificates / Documents
+    </div>
+    <div id="persoanllic">
+
+    </div>-->
+
+                    <div style="clear:both"></div>
+                    <div style="background:white;border:1px solid #ccc;margin:5px 0 5px 0;padding-bottom:5px" ng-show="IsLibraryVisible">
+                        <div style="text-align:left;padding:5px 0 5px 20px;font-size:16px;background:#ccc"><i class="fas fa-book-open" style="font-size:18px;color:red"></i>  Library</div>
+                        <div class="   applibraryitem" style="padding:2px 3px 5px 3px;" ng-repeat="x in library" ng-click="alertAction(x.Type)">
+                            <div class="card text-black-50  bg-white" style="margin:0px 10px 0 17px; padding:5px 7px 5px 0px;display:block;height:60px;border:none;border-bottom:1px dashed gray">
+                                <div class="col-lg-9 col-md-10 col-sm-10 col-xs-10" style="padding-right:0">
+                                    <div style="font-weight:bold;font-size:16px">{{x.Total}}</div>
+                                    <div style="margin-top:5px"><span style="display:inline-block;font-weight:bold">{{x.Caption}}</span><span style="display:inline-block;padding-left:5px;font-size:13px">{{x.Remark}}</span></div>
+                                </div>
+                                <div class="col-lg-3 col-md-2 col-sm-2 col-xs-2" style="text-align:center; ">
+                                    <i style="font-size:30px;position:relative;top:5px;" ng-class="x.icon"></i>
+                                </div>
+
+                                <div style="clear:both"></div>
+
+                            </div>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <!--Library ALERTS-->
+                    <!--<div style="padding:7px;border-bottom:1px solid #ccc;border-top:1px solid #ccc;color:gray;background:white;margin-bottom:2px;" ng-show="IsLibraryVisible">
+        Library
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6  applibraryitem" style="padding:2px 3px 5px 3px;" ng-repeat="x in library" ng-click="alertAction(x.Type)">
+        <div class="card text-black-50  bg-white" style="margin:0; padding:10px 7px 10px 0px;display:block;height:80px">
+            <div class="col-lg-9 col-md-10 col-sm-10 col-xs-10" style="padding-right:0">
+                <div style="font-weight:bold;font-size:16px">{{x.Total}}</div>
+                <div style="margin-top:5px"><span style="display:inline-block;font-weight:bold">{{x.Caption}}</span><span style="display:inline-block;padding-left:5px;font-size:13px">{{x.Remark}}</span></div>
+            </div>
+            <div class="col-lg-3 col-md-2 col-sm-2 col-xs-2" style="text-align:center;padding-left:0">
+                <i style="font-size:40px;" ng-class="x.icon"></i>
+            </div>
+
+            <div style="clear:both"></div>
+
+        </div>
+    </div>-->
+
+
+                    <div style="clear:both"></div>
+                    <div style="padding:7px;border-bottom:1px solid #ccc;border-top:1px solid #ccc;color:gray;background:white;margin-bottom:2px;" ng-show="IsCertificatesVisible">
+                        Certificates
+                    </div>
+                    <div class="  applibraryitem" style="padding:2px 3px 5px 3px;" ng-repeat="x in certificates" ng-click="alertAction(1001)">
+                        <div ng-class="x.class" style="margin:0; padding:10px 7px 10px 0px;display:block;min-height:80px">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                <div ng-bind-html="x.ExpireRemark"></div>
+                                <div style="margin-top:5px"><span style="display:inline-block;font-weight:bold">{{x.CourseTypeTitle}}</span></div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="text-align:center;padding-top:10px">
+                                <i style="font-size:35px;" ng-class="x.icon"></i>
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                <span style="display:inline-block;">Issue Date: </span>
+                                <span style="display:inline-block;font-weight:bold">{{x.DateIssue}}</span>
+                            </div>
+
+                            <div style="clear:both"></div>
+
+                        </div>
+                    </div>
+
+                    <div style="clear:both"></div>
+                    <div style="padding:7px;border-bottom:1px solid #ccc;border-top:1px solid #ccc;color:gray;background:white;margin-bottom:2px;" ng-show="IsCoursesVisible">
+                        New Courses
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12  applibraryitem" style="padding:2px 3px 5px 3px;" ng-repeat="x in courses" ng-click="alertAction(1002)">
+                        <div ng-class="x.class" style="margin:0; padding:10px 7px 10px 0px;display:block;min-height:80px">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                <div style="margin-top:5px"><span style="display:inline-block;"><i>{{x.Organization}}</i></span></div>
+                                <div style="margin-top:2px"><span style="display:inline-block;font-weight:bold">{{x.CT_Title}}</span></div>
+
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="text-align:center;padding-top:10px">
+                                <i style="font-size:30px;" ng-class="x.icon"></i>
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="margin-top:7px">
+
+                                <span style="display:inline-block;font-weight:normal">{{x.start}}</span>
+                            </div>
+
+                            <div style="clear:both;margin-top:5px"></div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div style="clear:both"></div>
+
+            </div>
+        </div>
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'apphome';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+
+
+    <div dx-load-panel="loadPanel"></div>
+</div>
+
+
+
+

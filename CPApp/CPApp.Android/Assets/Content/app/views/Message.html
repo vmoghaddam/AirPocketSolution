@@ -1,0 +1,40 @@
+﻿<div style="height:100%;">
+    <div class="box message maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#f0f3f5; ">
+
+
+            <div id="scrollview" dx-scroll-view="scroll_main">
+
+               
+                <div ng-repeat="x in ds" class="applibraryitem  card w3-text-gray bg-white" style="padding:1px 2px 5px 2px;display:block;margin-bottom:4px;margin-right:3px;margin-left:3px" ng-click="itemClick(x.Id)">
+                    <div class="col-lg-11 col-md-10 col-sm-10 col-xs-10" style="margin:0; padding:5px 5px 5px 10px;display:block">
+                        <p style="padding:5px 0 0px 0;margin:0; " ng-class="x.bold">{{x.Subject}}</p>
+                        <p style="padding:5px 0px 0px 20px;margin:0; " ng-bind-html="x.Sender"> </p>
+                        <p style="padding:5px 0 0px 20px;margin:0; " ng-bind-html="x.Abstract"> </p>
+
+
+
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2" style="text-align:center;padding-top:20px">
+                        <i   ng-class="x.icon"></i>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                   
+
+                    <div style="clear:both"></div>
+
+               
+
+            </div>
+        </div>
+
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'appmessage';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+    <div dx-load-panel="loadPanel"></div>
+</div>

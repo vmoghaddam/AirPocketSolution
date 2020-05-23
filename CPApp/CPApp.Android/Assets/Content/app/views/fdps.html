@@ -1,0 +1,517 @@
+﻿<style>
+    #fdps-btn-filter.dx-button.dx-button-default {
+        background-color: #b3b3b3;
+        box-shadow: none;
+    }
+
+    #fdps-btn-filter .dx-button-content {
+        padding: 3px 16px !important;
+    }
+    .dx-popup-title.dx-toolbar .dx-toolbar-item:last-child {
+        max-width: 300px !important;
+    }
+
+    .summarybox {
+        /*min-width: 140px !important;*/
+        padding-right: 3px;
+        margin-top: 3px;
+    }
+
+        .summarybox .caption {
+            font-size: 14px !important;
+            margin-bottom: 0 !important;
+        }
+
+        .summarybox .td-icon {
+            width: 35% !important;
+            padding: 0 5px 0 5px !important;
+        }
+
+    .home-box {
+        padding: 8px !important;
+        border-radius: 0
+    }
+
+    .summarybox i {
+        position: relative;
+        top: 2px;
+    }
+
+    .summarybox span {
+        display: inline-block;
+        margin-left: 2px;
+    }
+    /*.ripple {
+        background-position: center;
+        transition: background 0.5s;
+    }
+
+        .ripple:hover {
+            background: #eee radial-gradient(circle, transparent 1%, #eee 1%) center/15000%;
+        }
+
+        .ripple:active {
+            background-color: #fff;
+            background-size: 100%;
+            transition: background 0s;
+        }
+    .ripple.tile-selected {
+        background-position: center;
+        transition: background 0.5s;
+        border:3px solid black !important;
+    }
+        .ripple.tile-selected:hover {
+            background: #fff radial-gradient(circle, transparent 1%, #eee 1%) center/15000%;
+        }
+
+        .ripple.tile-selected:active {
+            background-color: #eee;
+            background-size: 100%;
+            transition: background 0s;
+        }*/
+    .lib-fdp {
+        /*background-position: center;
+        transition: background 0.4s;
+        background: #fff radial-gradient(circle, transparent 1%, #eee 1%) center/15000%  ;*/
+        background: white;
+        transition: background 0.4s;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 2px;
+        padding-left: 2px;
+        margin: 5px 5px 0 5px;
+        border: 1px solid #bbb
+    }
+
+    .fdp-over {
+        background: #c00000;
+        color: white;
+    }
+
+    #fdps-btn-filter.dx-button.dx-button-default {
+        background-color: #b3b3b3;
+    }
+</style>
+<div style="height:100%;">
+    <div class="box fdps maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#f0f3f5; ">
+            <div dx-tabs="tabs_options" class="gray">
+
+            </div>
+            <div id="total" style="display:none;height:100%" class="tabfdps" ng-show="isContentVisible">
+                <div id="scrollviewfdpstotal" dx-scroll-view="scroll_main_total">
+                    <div style="margin-bottom:0px;border-bottom:0px solid #ccc;padding:3px;">
+                        <div class="padding-0" style="padding-bottom:5px; border-bottom:1px solid #bbb">
+                            <div class="col-lg-3  col-xs-4 col-xsm-4 col-sm-4 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#ddd;color:black">From</div>
+                                    <div style="padding:5px;text-align:center;  ">{{formatDate(bindFrom2)}} </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3  col-xs-4 col-xsm-4 col-sm-4 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#ddd;color:black">To</div>
+                                    <div style="padding:5px;text-align:center;  ">{{formatDate(bindTo2)}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-4 col-xsm-4 col-sm-4 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#ddd;color:black">Period</div>
+                                    <div style="padding:5px;text-align:center;  ">{{data.period}} D</div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#00e6ac;color:black">Count</div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.count}}</div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#00e6ac;color:black">Duty</div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{formatMinutes(data.total)}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#00e6ac;color:black">Legs</div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.legs}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#00e6ac;color:black">B/L</div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{formatMinutes(data.bl)}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#ffffb3;color:black">
+                                        <i class="fas fa-plane-departure" style="font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">Day</span>
+                                    </div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.dayto}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                     
+                                        <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#e65c00;color:white">
+                                            <i class="fas fa-plane-departure" style="font-size:12px;"></i>
+                                            <span style="display:inline-block;margin-left:2px;font-size:12px;">Night</span>
+                                        </div>
+                                     
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.nightto}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#ffffb3;color:black">
+                                        <i class="fas fa-plane-arrival" style="font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">Day</span>
+                                    </div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.dayla}}</div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3  col-xs-3 col-xsm-3 col-sm-3 padding-0 center summarybox" style="padding:2px !important">
+
+                                <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                    <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;background:#e65c00;color:white">
+                                        <i class="fas fa-plane-arrival" style="font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">Night</span>
+                                    </div>
+                                    <div style="padding:5px;text-align:center;font-weight:bold">{{data.nightla}}</div>
+
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+
+                        </div>
+                    </div>
+                    <div style="margin-bottom:0px;border-bottom:0px solid #ccc;padding:3px;padding-bottom:7px; border-bottom:1px solid #bbb">
+                        <div class="col-lg-6  col-xs-6 col-xsm-4 col-sm-4 padding-0 center summarybox" style="padding:2px !important" ng-repeat="x in data.grps">
+                            <div class="home-box " style=" background:white !important;padding:1px !important;">
+                                <div style=" text-align:center;padding:3px;border-bottom:1px solid #ccc;font-size:12px;text-transform:uppercase;color:black">{{x.title}}</div>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td style="text-align:center;padding:5px;border-right:1px solid #ddd">{{formatMinutes(x.duty)}}</td>
+                                        <td style="text-align:center;padding:5px">{{x.count}}</td>
+                                    </tr>
+                                </table>
+                                <!--<div style="padding:5px;text-align:center;font-weight:bold">{{formatMinutes(data.total)}}</div>-->
+
+                            </div>
+                            
+
+                             
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+
+
+                    <!-- <div dx-date-box="date_ref" class="dx-border center"></div>-->
+                    <div style="background:white;border:1px solid #ccc;margin:5px 0 0px 0;text-align:center" ng-show="IsDutyVisible">
+
+                        <div style="text-align:left;padding:5px 0 0 5px;font-size:13px;">Duty</div>
+                        <div dx-bar-gauge="dutyGauge" style="margin:0 auto 0 auto"></div>
+                        <div style="text-align:center;padding-bottom:10px;">
+                            <i ng-style="d7style" class="fa fa-square"></i>
+                            <span style="font-size:13px">7d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d7}}</span>
+                            <i ng-style="d14style" class="fa fa-square"></i>
+                            <span style="font-size:13px">14d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d14}}</span>
+                            <i ng-style="d28style" class="fa fa-square"></i>
+                            <span style="font-size:13px">28d:</span>
+                            <span style="font-size:13px;display:inline-block;margin-left:0px;">{{d28}}</span>
+                        </div>
+                    </div>
+
+
+                    <div style="background:white;border:1px solid #ccc;margin:0px 0 5px 0">
+                        <div style="text-align:left;padding:5px 0 0 5px;font-size:13px;">Flight</div>
+                        <div>
+                            <div dx-bar-gauge="yflightGauge"></div>
+                            <div style="text-align:center;padding-bottom:10px;margin-top:10px">
+                                <i ng-style="yfstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">12m:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{yf}}</span>
+                                <i ng-style="cyfstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">Year:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{cyf}}</span>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div dx-bar-gauge="flightGauge"></div>
+                            <div style="text-align:center;padding-bottom:10px;margin-top:10px">
+                                <i ng-style="fstyle" class="fa fa-square"></i>
+                                <span style="font-size:13px">28d:</span>
+                                <span style="font-size:13px;display:inline-block;margin-left:0px;">{{f}}</span>
+
+
+                            </div>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+            <div id="detail" style="display:none;height:100%" class="tabfdps" ng-show="isContentVisible">
+                <div id="scrollviewfdps" dx-scroll-view="scroll_main">
+
+                    <div class="lib-fdp" ng-repeat="x in fdps" ng-click="itemClick($event,x)" id="fdp-{{x.Id}}">
+                        <div ng-if="x.DutyType != 1165">
+                            <div style="display:flex;align-items:center">
+                                <div style="float:left;width:15%;">
+                                    <div style="text-align:center;font-size:26px;">{{getDay(x.DutyStartLocal)}}</div>
+                                    <div style="text-align:center;font-size:12px;">{{getTileMonth(x.DutyStartLocal)}}</div>
+
+                                </div>
+                                <div style="float:left;width:85%; padding-top:1px;padding-left: 7px; border-left:1px dashed #ccc;padding-right:5px;">
+                                    <div style="font-size:14px;font-weight:bold;background:#ddd;border:1px solid #ccc;padding:5px;position:relative">
+                                        <span style="text-transform: uppercase;">{{x.DutyTypeTitle}}</span>
+
+                                        <div ng-show="x.Customer" style="text-align:center;color:#FF5722;padding:5px;font-size:13px;font-weight:bold; display:inline-block;position:absolute;right:1px;top:1px;">{{x.Customer}}</div>
+
+                                    </div>
+                                    <table style="width:100%;border:1px solid #ccc;margin-top:5px;">
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Starting</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.DutyStartLocal)}}</td>
+                                            <td style="text-align:center;width:25%">{{formatTime(x.DutyStartLocal)}}</td>
+                                        </tr>
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Ending</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.DutyEndLocal)}}</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;width:25%">{{formatTime(x.DutyEndLocal)}}</td>
+                                        </tr>
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Rest to</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.RestUntilLocal)}}</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;width:25%">{{formatTime(x.RestUntilLocal)}}</td>
+                                        </tr>
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Duty</td>
+
+                                            <td style="text-align:center;border-right:1px solid #ccc;" colspan="2">{{formatMinutes(x.Duty)}}</td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+                                <div style="clear:both"></div>
+
+                            </div>
+
+
+
+                            <div ng-show="x.Remark" style="font-size:12px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;text-align:right">
+
+                                <p style="text-align:left;padding-left:5px;padding-right:5px;padding-top:2px;text-align:justify">{{x.Remark}}</p>
+                            </div>
+
+                            <div style="clear:both"></div>
+
+                        </div>
+
+
+
+
+                        <div ng-if="x.DutyType == 1165">
+                            <div style="display:flex;align-items:center">
+                                <div style="float:left;width:15%;">
+                                    <div style="text-align:center;font-size:26px;">{{getDay(x.DutyStartLocal)}}</div>
+                                    <div style="text-align:center;font-size:12px;">{{getTileMonth(x.DutyStartLocal)}}</div>
+
+                                </div>
+                                <div style="float:left;width:85%; padding-top:1px;padding-left: 7px; border-left:1px dashed #ccc;padding-right:5px;">
+                                    <table style="width:100%;text-align:center;border:1px solid #ccc">
+                                        <tr style="line-height:20px;background:#ddd">
+                                            <td style="font-size:12px;border-right:1px solid #ccc;width:25%">FDP</td>
+                                            <td style="font-size:12px;border-right:1px solid #ccc;width:25%">Duty</td>
+                                            <td style="font-size:12px;border-right:1px solid #ccc;width:25%">B/L</td>
+                                            <td style="font-size:12px;width:25%">F/L</td>
+                                        </tr>
+                                        <tr style="line-height:25px;">
+                                            <td style=" border-right:1px solid #ccc;font-weight:bold" ng-class="getOverFDPClass(x)">{{formatMinutes(x.FDP)}}</td>
+                                            <td style=" border-right:1px solid #ccc;font-weight:bold">{{formatMinutes(x.Duty)}}</td>
+                                            <td style=" border-right:1px solid #ccc;font-weight:bold">{{formatMinutes(x.BlockTime)}}</td>
+                                            <td style="font-weight:bold">{{formatMinutes(x.FlightTime)}}</td>
+                                        </tr>
+
+                                    </table>
+                                    <table style="width:100%;border:1px solid #ccc;margin-top:5px;">
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Reporting</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.ReportingTimeLocal)}}</td>
+                                            <td style="text-align:center;width:25%">{{formatTime(x.ReportingTimeLocal)}}</td>
+                                        </tr>
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Ending</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.DutyEndLocal)}}</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;width:25%">{{formatTime(x.DutyEndLocal)}}</td>
+                                        </tr>
+                                        <tr style="line-height:25px;border-bottom:1px solid #ccc;">
+                                            <td style="padding-left:5px;border-right:1px solid #ccc;font-size:13px;width:25%;background:#eee">Rest to</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;font-size:13px">{{formatDate(x.RestUntilLocal)}}</td>
+                                            <td style="text-align:center;border-right:1px solid #ccc;width:25%">{{formatTime(x.RestUntilLocal)}}</td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+
+                            <div style="font-size:12px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <table style="width:100%">
+                                    <tr>
+                                        <td style="text-align:right;font-size:12px;">Sector(s) :</td>
+                                        <td style="padding-left:5px;font-weight:bold;font-size:12px">{{x.Sector}}</td>
+                                        <td style="text-align:right;font-size:12px;">DH(s) :</td>
+                                        <td style="padding-left:5px;font-weight:bold;font-size:12px">{{x.DH}}</td>
+                                        <td style="text-align:right;font-size:12px;">Max FDP :</td>
+                                        <td style="padding-left:5px;font-weight:bold;font-size:12px">{{formatMinutes(x.MaxFDPExtended)}}</td>
+                                        <td ng-show="x.Customer" style="text-align:center;background:#FF5722;padding:5px;font-size:13px;">{{x.Customer}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div style="clear:both"></div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="border-top:0px solid #33adff;padding:0px;margin-top:0px;" ng-show="isContentVisible">
+                <div id="fdps-btn-filter" dx-button="btn_filter"></div>
+
+            </div>
+
+        </div>
+
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'fdps';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+
+
+    <div id="popup_duty" dx-popup="popup_duty">
+        <div dx-scroll-view="scroll_duty">
+
+            <div class="dx-border">
+
+                <div class="margin-bottom-5 padding-7  ">
+                    <label>Type</label>
+                    <div dx-select-box="sb_duty" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+                <div class="margin-bottom-5 padding-7  ">
+                    <label>Airline</label>
+                    <div dx-select-box="sb_airline" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+                <div class="margin-bottom-5 padding-7 col-xs-6 col-md-6 col-sm-6 ">
+                    <label>Start</label>
+                    <div dx-date-box="date_start" class="center" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+                <div class="margin-bottom-5 padding-7  col-xs-6 col-md-6 col-sm-6 ">
+
+                    <label> &nbsp;</label>
+                    <div dx-date-box="time_start" class="center" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+                <div class="margin-bottom-5 padding-7  col-xs-6 col-md-6 col-sm-6 ">
+                    <label>End</label>
+                    <div dx-date-box="date_end" class="center" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+
+                </div>
+                <div class="margin-bottom-5 padding-7 col-xs-6 col-md-6 col-sm-6  ">
+
+                    <label> &nbsp;</label>
+                    <div dx-date-box="time_end" class="center" dx-validator="{validationGroup:'fdpsduty',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+
+                <div class="margin-bottom-5 padding-7" style="display:block">
+                    <label>Rremark</label>
+                    <div dx-text-area="txt_remark" class="ltr"></div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="popup_filter" dx-popup="popup_filter">
+
+
+        <div class="dx-border">
+
+
+            <div class="margin-bottom-5 padding-7   ">
+                <label>To</label>
+                <div dx-date-box="filter_to" class="center" dx-validator="{validationGroup:'fdpsfilter',  validationRules: [{ type: 'required'}]}"></div>
+
+            </div>
+            <div class="margin-bottom-5" style="padding:0;text-align:center">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-xsm-4" style="padding:6px;">
+                    <div style="background:#ddd;border:1px solid #ccc;padding:7px" ng-click="periodClick(7)">7 Days</div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-xsm-4" style="padding:6px;" ng-click="periodClick(14)">
+                    <div style="background:#ddd;border:1px solid #ccc;padding:7px">14 Days</div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-xsm-4" style="padding:6px;" ng-click="periodClick(28)">
+                    <div style="background:#ddd;border:1px solid #ccc;padding:7px">28 Days</div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="margin-bottom-5 padding-7    ">
+                <label>From</label>
+                <div dx-date-box="filter_from" class="center" dx-validator="{validationGroup:'fdpsfilter',  validationRules: [{ type: 'required'}]}"></div>
+
+            </div>
+
+            <div style="clear:both"></div>
+        </div>
+
+
+    </div>
+
+    <div dx-load-panel="loadPanel"></div>
+</div>

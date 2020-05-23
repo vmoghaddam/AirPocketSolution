@@ -1,0 +1,1430 @@
+﻿<style>
+    .gray .dx-tab {
+        background-color: darkgray;
+    }
+
+    .lib-flight {
+        border: 1px solid #ccc;
+        margin: 4px 6px 0 6px;
+        /*padding:20px !important;*/
+        display: block;
+        background-color: cornsilk;
+    }
+
+    #scheduler-xs .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-date-table-cell {
+        height: 50px !important;
+    }
+    /*.dx-item.dx-scheduler-appointment.dx-scheduler-appointment-horizontal{
+        width:25px !important;
+        height:25px !important;
+        border-radius:50%;
+
+
+    }*/
+    .accordion {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 7px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+    }
+
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .accordion:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+    .active:after {
+        content: "\2212";
+    }
+
+    .panel {
+        padding: 0 0px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
+
+    .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-date-table-cell > div {
+        font-size: 12px;
+        padding: 4px !important;
+    }
+
+    .dx-item.dx-scheduler-appointment.dx-scheduler-appointment-horizontal.dx-resizable.dx-draggable {
+        height: 26px !important;
+        top: -7px !important;
+    }
+
+    .dx-scheduler-work-space.dx-scheduler-work-space-month .dx-scheduler-appointment-content {
+        padding-top: 0 !important;
+    }
+
+    .scheduled {
+        color: #ffd480 !important;
+    }
+
+    .boarding {
+        color: #ff66ff !important;
+    }
+
+    .start {
+        color: #80ffff !important;
+    }
+
+    .taxi {
+        color: #00b3b3 !important;
+    }
+
+    .departed {
+        color: #00ff00 !important;
+    }
+
+    .offblocked {
+        color: #80ffff !important;
+    }
+
+    .onblocked {
+        color: #66b3ff !important;
+    }
+
+
+
+    .arrived {
+        color: #99ccff !important;
+    }
+
+    .canceled {
+        color: #808080 !important;
+    }
+
+    .delay {
+        color: #ff0000 !important;
+    }
+
+    .inactive {
+        color: #cccccc !important;
+    }
+
+    .diverted {
+        color: #e6e600 !important;
+    }
+
+    .redirect {
+        color: #e6e600 !important;
+    }
+
+    .ground {
+        color: #ff8000 !important;
+    }
+
+    .nodata {
+        color: #787878 !important;
+    }
+
+    .returntoramp {
+        color: #9900cc !important;
+    }
+
+    .selected {
+        background: #e6e6e6 !important;
+    }
+
+    #dg_apt .dx-datagrid-header-panel {
+        padding: 0;
+        color: white;
+    }
+
+        #dg_apt .dx-datagrid-header-panel .dx-toolbar {
+            margin: 0;
+            padding-right: 20px;
+            background-color: transparent;
+            padding-left: 10px;
+        }
+
+            #dg_apt .dx-datagrid-header-panel .dx-toolbar .dx-placeholder {
+                padding-left: 20px;
+            }
+
+            #dg_apt .dx-datagrid-header-panel .dx-toolbar .dx-texteditor-input {
+                padding-left: 25px;
+            }
+
+        #dg_apt .dx-datagrid-header-panel .dx-toolbar-items-container {
+            height: 35px;
+        }
+
+    #dg_apt .dx-icon.dx-icon-export-excel-button {
+        color: white;
+    }
+
+    .dx-datagrid-toolbar-button.dx-datagrid-export-button.dx-button.dx-button-normal.dx-widget.dx-button-has-icon .dx-button-content {
+        background: gray;
+    }
+</style>
+<div style="height:100%;">
+    <div class="box flight maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#f0f3f5;  ">
+
+            <!-- <div dx-data-grid="dg_flight" id="dg_flight" class="content" style="overflow-y:hidden"></div>-->
+            <div dx-tabs="tabs_options" class="gray">
+
+            </div>
+
+            <div id="tomorrow" style="display:none;height:100%" class="tabc">
+                <!--Mobile-->
+                <div style="padding:0; height:100%">
+                    <div id="scrltom" dx-scroll-view="scroll_tomorrow">
+
+                        <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-lg hidden-md hidden-sm" ng-repeat="x in ds_tomorrow" ng-click="showFlight(x)">
+                            <div style="float:left;width:15%;">
+                                <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+
+                            </div>
+                            <div style="float:left;width:85%; padding-top:1px;">
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <!--row2-->
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div style="clear:both"></div>
+                            <div ng-show="x.NightTakeOff || x.DayTakeOff || x.DayLanding || x.NightLanding" style="border-top:0px dashed #ccc;margin:5px;padding-top:3px;">
+                                <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.DayTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Day</span>
+                                </div>
+                                <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.NightTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Night</span>
+                                </div>
+
+                                <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.DayLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Day </span>
+                                </div>
+                                <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.NightLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Night </span>
+                                </div>
+
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                    <i ng-class="getStatusClass(x)"></i>
+                                    <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                </div>
+                                <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                    <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                    <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                    <i style="color:gray" class="fa fa-plane"></i>
+                                    <span>{{x.Register}}</span>
+                                    <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                    <span>{{x.Airline}}</span>
+
+                                </div>
+                                <div style="clear:both"></div>
+
+
+                            </div>
+
+                        </div>
+                        <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-xs" ng-repeat="x in ds_tomorrow" ng-click="showFlight(x)">
+                            <div style="float:left;width:17%;border-right:1px dotted gray;margin-top:2px;padding:5px 0 5px 0;">
+                                <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="float:left;width:66%; padding-top:1px;margin-top:2px;border-right:1px dotted gray">
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <!--row2-->
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div style="float:right;width:17%; margin-top:2px;padding:5px 0 5px 0;">
+                                <div style=" text-align:center;padding:5px;" ng-show="x.DayTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Day</span>
+                                </div>
+                                <div style=" text-align:center;padding:5px;" ng-show="x.NightTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Night</span>
+                                </div>
+
+                                <div style=" text-align:center;padding:5px;" ng-show="x.DayLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Day </span>
+                                </div>
+                                <div style="  text-align:center;padding:5px;" ng-show="x.NightLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Night </span>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="clear:both"></div>
+
+                            <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                    <i ng-class="getStatusClass(x)"></i>
+                                    <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                </div>
+                                <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                    <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                    <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                    <i style="color:gray" class="fa fa-plane"></i>
+                                    <span>{{x.Register}}</span>
+                                    <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                    <span>{{x.Airline}}</span>
+
+                                </div>
+                                <div style="clear:both"></div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--End Of Mobile-->
+
+
+            </div>
+
+            <div id="today" style="display:none;height:100%" class="tabc">
+
+                <!--Mobile-->
+                <div style="padding:0;height:100%">
+                    <div id="scrltod" dx-scroll-view="scroll_tomorrow">
+                        <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-lg hidden-md hidden-sm" ng-repeat="x in ds_today" ng-click="showFlight(x)">
+                            <div style="float:left;width:15%;">
+                                <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+
+                            </div>
+                            <div style="float:left;width:85%; padding-top:1px;">
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <!--row2-->
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div style="clear:both"></div>
+                            <div ng-show="x.NightTakeOff || x.DayTakeOff || x.DayLanding || x.NightLanding" style="border-top:0px dashed #ccc;margin:5px;padding-top:3px;">
+                                <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.DayTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Day</span>
+                                </div>
+                                <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.NightTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Night</span>
+                                </div>
+
+                                <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.DayLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Day </span>
+                                </div>
+                                <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.NightLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Night </span>
+                                </div>
+
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                    <i ng-class="getStatusClass(x)"></i>
+                                    <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                </div>
+                                <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                    <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                    <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                    <i style="color:gray" class="fa fa-plane"></i>
+                                    <span>{{x.Register}}</span>
+                                    <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                    <span>{{x.Airline}}</span>
+
+                                </div>
+                                <div style="clear:both"></div>
+
+
+                            </div>
+                            <!--<div style="float:left;width:15%;">
+                                <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                <div style="text-align:center;font-size:12px;">{{getFlightTileMonth(x.STDDay)}}</div>
+
+                            </div>
+                            <div style="float:left;width:85%; padding-top:1px;">
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div style="clear:both"></div>
+                            <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <div style="float:left;width:50%;text-align:left;padding-left:5px">
+                                    <i ng-class="getStatusClass(x)"></i>
+                                    <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                </div>
+                                <div style="float:left;width:50%;text-align:right;padding-right:5px">
+                                    <i style="color:gray" class="fa fa-plane"></i>
+                                    <span>{{x.Register}}</span>
+                                    <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                    <span>{{x.Airline}}</span>
+
+                                </div>
+                                <div style="clear:both"></div>
+
+
+                            </div>-->
+                        </div>
+
+                        <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-xs" ng-repeat="x in ds_today" ng-click="showFlight(x)">
+                            <div style="float:left;width:17%;border-right:1px dotted gray;margin-top:2px;padding:5px 0 5px 0;">
+                                <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="float:left;width:66%; padding-top:1px;margin-top:2px;border-right:1px dotted gray">
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <!--row2-->
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:30%;text-align:center">
+                                        <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                    </div>
+                                    <div style="float:left;width:15%;text-align:center;">
+                                        &nbsp;
+                                    </div>
+                                    <div style="float:left;width:20%;text-align:center">
+                                        <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div style="float:right;width:17%; margin-top:2px;padding:5px 0 5px 0;">
+                                <div style=" text-align:center;padding:5px;" ng-show="x.DayTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Day</span>
+                                </div>
+                                <div style=" text-align:center;padding:5px;" ng-show="x.NightTakeOff">
+                                    <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Night</span>
+                                </div>
+
+                                <div style=" text-align:center;padding:5px;" ng-show="x.DayLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Day </span>
+                                </div>
+                                <div style="  text-align:center;padding:5px;" ng-show="x.NightLanding">
+                                    <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                    <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Night </span>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div style="clear:both"></div>
+
+                            <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                    <i ng-class="getStatusClass(x)"></i>
+                                    <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                </div>
+                                <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                    <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                    <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                    <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                    <i style="color:gray" class="fa fa-plane"></i>
+                                    <span>{{x.Register}}</span>
+                                    <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                    <span>{{x.Airline}}</span>
+
+                                </div>
+                                <div style="clear:both"></div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+                <!--End Of Mobile-->
+
+
+            </div>
+
+            <!--<div id="scrollview" dx-scroll-view="scroll_main">
+            </div>-->
+            <div id="all" class="tabc">
+                <div class="no-rotate">
+                    <button id="btn" class="accordion" style="text-align:center;font-size:13px">Calendar</button>
+                    <div class="panel" style="margin-bottom:0;">
+                        <div id="scheduler-xs" dx-scheduler="schedulerOptions" dx-item-alias="item">
+                            <div data-options="dxTemplate:{name:'appointmentTemplate'}" style="text-align:center">
+                                <span style="font-weight:bold;display:inline-block;margin-top:1px;font-size:13px;">{{item.Total}}</span> <i class="fa fa-plane" style="font-size:12px;position:relative;top:-1px"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Mobile-->
+                    <div style="padding:0">
+                        <div id="scrollviewall" class="thin-scroll" style="overflow-y:auto; ">
+
+                            <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-lg hidden-sm hidden-md" ng-repeat="x in ds_day" ng-click="showFlight(x)">
+                                <div style="float:left;width:15%;">
+                                    <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                    <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+
+                                </div>
+                                <div style="float:left;width:85%; padding-top:1px;">
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <!--row2-->
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div style="clear:both"></div>
+                                <div ng-show="x.NightTakeOff || x.DayTakeOff || x.DayLanding || x.NightLanding" style="border-top:0px dashed #ccc;margin:5px;padding-top:3px;">
+                                    <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.DayTakeOff">
+                                        <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Day</span>
+                                    </div>
+                                    <div style="float:left; text-align:left;padding-left:5px;" ng-show="x.NightTakeOff">
+                                        <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">TakeOff/Night</span>
+                                    </div>
+
+                                    <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.DayLanding">
+                                        <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Day </span>
+                                    </div>
+                                    <div style="float:right; text-align:left;padding-left:5px;" ng-show="x.NightLanding">
+                                        <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:12px;">Landing/Night </span>
+                                    </div>
+
+                                    <div style="clear:both"></div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                    <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                        <i ng-class="getStatusClass(x)"></i>
+                                        <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                    </div>
+                                    <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                        <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                        <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                        <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                        <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                        <i style="color:gray" class="fa fa-plane"></i>
+                                        <span>{{x.Register}}</span>
+                                        <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                        <span>{{x.Airline}}</span>
+
+                                    </div>
+                                    <div style="clear:both"></div>
+
+
+                                </div>
+                                <!--<div style="float:left;width:15%;">
+                                    <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                    <div style="text-align:center;font-size:12px;">{{getFlightTileMonth(x.STDDay)}}</div>
+
+                                </div>
+                                <div style="float:left;width:85%; padding-top:1px;">
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>
+
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div style="clear:both"></div>
+                                <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                    <div style="float:left;width:50%;text-align:left;padding-left:5px">
+                                        <i ng-class="getStatusClass(x)"></i>
+                                        <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                    </div>
+                                    <div style="float:left;width:50%;text-align:right;padding-right:5px">
+                                        <i style="color:gray" class="fa fa-plane"></i>
+                                        <span>{{x.Register}}</span>
+                                        <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                        <span>{{x.Airline}}</span>
+
+                                    </div>
+                                    <div style="clear:both"></div>
+
+
+                                </div>-->
+                            </div>
+
+                            <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight hidden-xs" ng-repeat="x in ds_day" ng-click="showFlight(x)">
+                                <div style="float:left;width:17%;border-right:1px dotted gray;margin-top:2px;padding:5px 0 5px 0;">
+                                    <div style="text-align:center;font-size:26px;">{{getDay(x.STDDay)}}</div>
+                                    <div style="text-align:center;font-size:12px;">{{getTileMonth(x.STDDay)}}</div>
+                                    <div style="clear:both"></div>
+                                </div>
+                                <div style="float:left;width:66%; padding-top:1px;margin-top:2px;border-right:1px dotted gray">
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STDLocal)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;">{{getDuration(x.FlightTime)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.STALocal)}}</div>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <!--row2-->
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.FromAirportIATA}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;font-weight:bold;padding:3px 0">{{x.FlightNumber}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black;position:relative;top:-6px">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-weight:bold;padding:3px 0">{{x.ToAirportIATA}}</div>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.ChocksOutLocal)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:30%;text-align:center">
+                                            <div style="font-size:14px;">{{getDuration(x.BlockTime)}}</div>
+                                        </div>
+                                        <div style="float:left;width:15%;text-align:center;">
+                                            &nbsp;
+                                        </div>
+                                        <div style="float:left;width:20%;text-align:center">
+                                            <div style="font-size:14px;">{{getTimeFormated(x.ChocksInLocal)}}</div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div style="float:right;width:17%; margin-top:2px;padding:5px 0 5px 0;">
+                                    <div style=" text-align:center;padding:5px;" ng-show="x.DayTakeOff">
+                                        <i class="fas fa-plane-departure" style="color:#ffff00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Day</span>
+                                    </div>
+                                    <div style=" text-align:center;padding:5px;" ng-show="x.NightTakeOff">
+                                        <i class="fas fa-plane-departure" style="color:#e65c00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:13px;">TakeOff/Night</span>
+                                    </div>
+
+                                    <div style=" text-align:center;padding:5px;" ng-show="x.DayLanding">
+                                        <i class="fas fa-plane-arrival" style="color:#ffff00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Day </span>
+                                    </div>
+                                    <div style="  text-align:center;padding:5px;" ng-show="x.NightLanding">
+                                        <i class="fas fa-plane-arrival" style="color:#e65c00;font-size:12px;"></i>
+                                        <span style="display:inline-block;margin-left:2px;font-size:13px;">Landing/Night </span>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                </div>
+                                <div style="clear:both"></div>
+
+                                <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                                    <div style="float:left;width:30%;text-align:left;padding-left:5px">
+                                        <i ng-class="getStatusClass(x)"></i>
+                                        <span style="display:inline-block;margin-left:2px">{{getStatus(x.FlightStatus)}}</span>
+                                    </div>
+                                    <div style="float:left;width:70%;text-align:right;padding-right:5px">
+                                        <i style="display:inline-block;color:#d24dff" class="fas fa-user-tag" ng-show="x.IsPositioning"></i>
+                                        <span style="display:inline-block;margin-right:7px;" ng-show="x.IsPositioning">D/H</span>
+                                        <i style="display:inline-block;color:#00cc99" class="fas fa-arrows-alt-h" ng-show="x.SplitDuty"></i>
+                                        <span style="display:inline-block;margin-right:7px;" ng-show="x.SplitDuty">S/D</span>
+                                        <i style="color:gray" class="fa fa-plane"></i>
+                                        <span>{{x.Register}}</span>
+                                        <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+
+                                        <span>{{x.Airline}}</span>
+
+                                    </div>
+                                    <div style="clear:both"></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Of Mobile-->
+
+                </div>
+
+                <div class="yes-rotate" style="font-size:16px;display:none;text-align:center;padding-top:20px;">
+                    Please rotate your device.
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'appflightcalendar';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+
+    <div id="popup_flight" dx-popup="popup_flight">
+        <div id="popup_flight_scroll" style="padding:0px 0 0 0; height:100%;">
+            <div dx-scroll-view="scroll_popup">
+                <div class="dx-border">
+                    <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important" class="lib-flight">
+
+                        <div style="float:left;width:15%;">
+                            <div style="text-align:center;font-size:26px;">{{getDay(flight.STDDay)}}</div>
+                            <div style="text-align:center;font-size:12px;">{{getFlightTileMonth(flight.STDDay)}}</div>
+
+                        </div>
+                        <div style="float:left;width:85%; padding-top:1px;">
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(flight.STDLocal)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;">{{getDuration(flight.FlightTime)}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center;border-bottom:1px solid black">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-size:14px;">{{getTimeFormated(flight.STALocal)}}</div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <!--row2-->
+                            <div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{flight.FromAirportIATA}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:30%;text-align:center">
+                                    <div style="font-size:14px;font-weight:bold;padding:3px 0">{{flight.FlightNumber}}</div>
+                                </div>
+                                <div style="float:left;width:15%;text-align:center">
+                                    &nbsp;
+                                </div>
+                                <div style="float:left;width:20%;text-align:center">
+                                    <div style="font-weight:bold;padding:3px 0">{{flight.ToAirportIATA}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="clear:both"></div>
+                        <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;">
+                            <div style="float:left;width:50%;text-align:left;padding-left:5px">
+                                <i ng-class="getStatusClass(flight)"></i>
+                                <span style="display:inline-block;margin-left:2px">{{flight.FlightStatus}}</span>
+                            </div>
+                            <div style="float:left;width:50%;text-align:right;padding-right:5px">
+                                <i style="color:gray" class="fa fa-plane"></i>
+                                <span>{{flight.Register}}</span>
+                                <i style="display:inline-block;margin-left:10px;color:gray" class="fa fa-square"></i>
+                                <span>{{x.Airline}}</span>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                    </div>
+                    <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important;padding:5px 10px" class="lib-flight">
+                        <table style="width:100%;">
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Scheduled Departure</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.STDLocal)}}</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Scheduled Arrival</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.STALocal)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Block Off</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.ChocksOutLocal)}}</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Take Off</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.TakeOffLocal)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Landing</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.LandingLocal)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Block On</td>
+                                <td style="width:50%; text-align:right">{{getTimeFormated(flight.ChocksInLocal)}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important;padding:5px 10px" class="lib-flight">
+                        <table style="width:100%;">
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Scheduled Flight Time</td>
+                                <td style="width:50%; text-align:right">{{getDuration(flight.FlightTime)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">SITA Flight Time</td>
+                                <td style="width:50%; text-align:right">{{getDuration(flight.SITATime)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Actual Flight Time</td>
+                                <td style="width:50%; text-align:right">{{getDuration(flight.FlightTimeActual)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left">Block Time</td>
+                                <td style="width:50%; text-align:right">{{getDuration(flight.BlockTime)}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding-top:2px;padding-right:2px;padding-left:2px;background:white !important;padding:0" class="lib-flight">
+                        <div style="text-align:center;background:#ccc;padding:5px;">Crew</div>
+                        <div style="padding:0 5px;" ng-show="!flight.CPCrewId">
+                            <table style="width:100%;">
+                                <tr style="border-bottom:0px solid #ccc;height:30px" ng-repeat="x in crew">
+                                    <td style="width:30%;text-align:left;font-weight:bold">{{x.Position}}</td>
+                                    <td style="width:70%; text-align:right">{{x.Name}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div style="padding:0 5px;" ng-show="flight.CPCrewId">
+                            <table style="width:100%;">
+
+                                <tr style="border-bottom:0px solid #ccc;height:30px">
+                                    <td style="width:30%;text-align:left;font-weight:bold">P1</td>
+                                    <td style="width:70%; text-align:right">{{flight.CPP1}} </td>
+                                </tr>
+                                <tr style="border-bottom:0px solid #ccc;height:30px">
+                                    <td style="width:30%;text-align:left;font-weight:bold">P2</td>
+                                    <td style="width:70%; text-align:right"> {{flight.CPP2}}</td>
+                                </tr>
+                                <tr style="border-bottom:0px solid #ccc;height:30px">
+                                    <td style="width:30%;text-align:left;font-weight:bold">SCCM</td>
+                                    <td style="width:70%; text-align:right">{{flight.CPSCCM}} </td>
+                                </tr>
+                                <tr style="border-bottom:0px solid #ccc;height:30px">
+                                    <td style="width:30%;text-align:left;font-weight:bold">Instructor</td>
+                                    <td style="width:70%; text-align:right"> {{flight.CPInstructor}}</td>
+                                </tr>
+                                <tr style="border-bottom:0px solid #ccc;height:30px">
+                                    <td style="width:30%;text-align:left;font-weight:bold">ISCCM</td>
+                                    <td style="width:70%; text-align:right"> {{flight.CPISCCM}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--<div id="popup_newflight" dx-popup="popup_newflight">
+
+        <div id="popup_flight_scroll" style="padding:0px 0 0 0; height:100%;">
+            <div dx-scroll-view="scroll_popup">
+                <div class="dx-border">
+
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12    margin-bottom-5 padding-7">
+                        <label>Flight Status</label>
+                        <div dx-select-box="sb_status" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Airline</label>
+
+                        <div dx-select-box="sb_airline" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6   col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Flight Number</label>
+                        <div dx-text-box="txt_flightNo" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="margin-bottom-5 padding-7 col-xs-6  ">
+                        <label>Date</label>
+                        <div dx-date-box="date_flightDate" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Position</label>
+                        <div dx-select-box="sb_position" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>From</label>
+                        <div dx-select-box="sb_from" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>To</label>
+                        <div dx-select-box="sb_to" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>STD</label>
+                        <div dx-date-box="time_std" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12  col-xs-6 margin-bottom-5 padding-7">
+                        <label>STA</label>
+                        <div dx-date-box="time_sta" class="center" dx-validator="{validationGroup:'add_new_flight',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>Off Block</label>
+                        <div dx-date-box="time_offBlock" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>On Block</label>
+                        <div dx-date-box="time_onBlock" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>Takeoff</label>
+                        <div dx-date-box="time_takeoff" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Landing</label>
+                        <div dx-date-box="time_landing" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6   col-xs-6 margin-bottom-5 padding-7">
+                        <label>Night Time (minutes)</label>
+                        <div dx-number-box="num_night" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-1  col-xs-1 margin-bottom-5 padding-7">
+                        <label>&nbsp;</label>
+                        <div dx-button="btn_sunflight" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>AC Type</label>
+                        <div dx-select-box="sb_actype" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-6 col-12  margin-bottom-5 padding-7">
+                        <label>Register</label>
+                        <div dx-text-box="txt_register" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>-->
+
+    <div id="popup_newflight" dx-popup="popup_newflight">
+
+        <div id="popup_nflight_scroll" style="padding:0px 0 0 0; height:100%;">
+            <div dx-scroll-view="scroll_popup">
+                <div class="dx-border">
+                    <!--New Flight-->
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 col-xsm-6   margin-bottom-5 padding-7">
+                        <label>Flight Status</label>
+                        <div dx-select-box="_sb_status" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 col-xsm-6  margin-bottom-5 padding-7">
+                        <label>Airline</label>
+
+                        <div dx-select-box="_sb_airline" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>AC Type</label>
+                        <div dx-select-box="_sb_actype" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-6 col-12  margin-bottom-5 padding-7">
+                        <label>Register</label>
+                        <div dx-text-box="_txt_register" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Position</label>
+                        <div dx-select-box="_sb_position" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6   col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Flight Number</label>
+                        <div dx-text-box="_txt_flightNo" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="margin-bottom-5 padding-7 col-xs-6  ">
+                        <label>Departure</label>
+                        <div dx-date-box="_date_departure" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="margin-bottom-5 padding-7 col-xs-6  ">
+                        <label>Arrival</label>
+                        <div dx-date-box="_date_arrival" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>From</label>
+                        <div dx-select-box="_sb_from" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>To</label>
+                        <div dx-select-box="_sb_to" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>STD</label>
+                        <div dx-date-box="_time_std" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12  col-xs-6 margin-bottom-5 padding-7">
+                        <label>STA</label>
+                        <div dx-date-box="_time_sta" class="center" dx-validator="{validationGroup:'add_new_flight3',  validationRules: [{ type: 'required'}]}"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>Off Block</label>
+                        <div dx-date-box="_time_offBlock" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>Takeoff</label>
+                        <div dx-date-box="_time_takeoff" class="center"></div>
+                    </div>
+
+                    <div style="clear:both"></div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6  margin-bottom-5 padding-7">
+                        <label>Landing</label>
+                        <div dx-date-box="_time_landing" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12 col-xs-6 margin-bottom-5 padding-7">
+                        <label>On Block</label>
+                        <div dx-date-box="_time_onBlock" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="col-lg-2 col-md-6 col-sm-6   col-xs-6 margin-bottom-5 padding-7">
+                        <label>Night Time (minutes)</label>
+                        <div dx-number-box="num_night" class="center"></div>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-1  col-xs-1 margin-bottom-5 padding-7">
+                        <label>&nbsp;</label>
+                        <div dx-button="btn_sunflight" class="center"></div>
+                    </div>
+                    <div style="clear:both"></div>
+
+
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-6 col-12  margin-bottom-5 padding-7">
+                        <label>&nbsp;</label>
+                        <div dx-check-box="_chb_dh"></div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div style="border-bottom:1px solid #ccc;padding:10px 10px 5px 10px">Crew</div>
+                    <div style="padding:0 10px 0 10px">
+                        <table style="width:100%;margin-top:10px">
+                            <tr>
+                                <td style="width:70px;text-align:right;padding-right:5px;">Instructor:</td>
+                                <td style="padding:5px 0 5px 0"><div dx-text-box="txt_instructor"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:70px;text-align:right;padding-right:5px;">P1:</td>
+                                <td style="padding:5px 0 5px 0"><div dx-text-box="txt_p1"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:70px;text-align:right;padding-right:5px;">P2:</td>
+                                <td style="padding:5px 0 5px 0"><div dx-text-box="txt_p2"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:70px;text-align:right;padding-right:5px;">ISCCM:</td>
+                                <td style="padding:5px 0 5px 0"><div dx-text-box="txt_isccm"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:70px;text-align:right;padding-right:5px;">SCCM:</td>
+                                <td style="padding:5px 0 5px 0"><div dx-text-box="txt_sccm"></div></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="popup_apt" dx-popup="popup_apt">
+        <div dx-data-grid="dg_apt" id="dg_apt" class="content narrow" style="overflow-y:hidden"></div>
+    </div>
+    <div dx-load-panel="loadPanel"></div>
+</div>

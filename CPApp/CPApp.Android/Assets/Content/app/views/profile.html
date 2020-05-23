@@ -1,0 +1,319 @@
+﻿<style>
+    .lib-profile {
+        background: white;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 2px;
+        padding-left: 2px;
+        margin: 5px 5px 0 5px;
+        border: 1px solid #bbb;
+        transition: background 0.4s;
+    }
+
+    .dx-popup-title.dx-toolbar .dx-toolbar-item:last-child {
+        max-width: 300px !important;
+    }
+
+    .lib-cer {
+        /*background-position: center;
+        transition: background 0.4s;
+        background: #fff radial-gradient(circle, transparent 1%, #eee 1%) center/15000%  ;*/
+        background: white;
+        transition: background 0.4s;
+    }
+</style>
+<div style="height:100%;">
+    <div class="box profile maincontainer" style="height:100%;overflow-y:hidden;max-width:1024px;margin:0 auto 0 auto">
+        <div class="rowx header" ng-include="'app/views/header.html'"></div>
+        <div style="position:relative;">
+            <div ng-include="'app/views/menu.html'"></div>
+        </div>
+
+        <div class="rowx content" style="clear:both;background:#f0f3f5; ">
+
+
+            <div id="scrollviewprofile" dx-scroll-view="scroll_profile">
+                <div style="background:white !important;padding:0;" class="lib-profile">
+                    <div style="color:white;background:#a6a6a6;border-bottom:1px solid #ccc;padding:5px 10px">Personal</div>
+                    <div style="padding:5px 10px">
+                        <table style="width:100%;">
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Name</td>
+                                <td style="width:50%; text-align:right">{{emp.Name}}</td>
+                            </tr>
+
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">National Code</td>
+                                <td style="width:50%; text-align:right">{{emp.NID}}</td>
+                            </tr>
+
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Gender</td>
+                                <td style="width:50%; text-align:right">{{emp.Sex}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Birth Date</td>
+                                <td style="width:50%; text-align:right">{{formatDate(emp.DateBirth)}}</td>
+                            </tr>
+
+
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Rank</td>
+                                <td style="width:50%; text-align:right">{{emp.JobGroup}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray"> Passport No</td>
+                                <td style="width:50%; text-align:right">{{emp.PassportNumber}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray"> Passport Expire Date</td>
+                                <td style="width:50%; text-align:right">{{formatDate(emp.DatePassportExpire)}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray"> Home Base</td>
+                                <td style="width:50%; text-align:right">{{emp.BaseAirport}}</td>
+                            </tr>
+
+
+
+
+                        </table>
+                    </div>
+
+                </div>
+                <div style="padding:0px; background:white !important; " class="lib-profile">
+                    <div style="color:white;background:#a6a6a6;border-bottom:1px solid #ccc;padding:5px 10px">Contact</div>
+                    <div style="padding:5px 10px">
+                        <table style="width:100%;">
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Mobile</td>
+                                <td style="width:50%; text-align:right">{{emp.Mobile}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Email</td>
+                                <td style="width:50%; text-align:right">{{emp.Email}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">LinkedIn</td>
+                                <td style="width:50%; text-align:right">{{emp.LinkedIn}}</td>
+                            </tr>
+                            <!--<tr style="border-bottom:0px solid #ccc;height:30px">
+                    <td style="width:50%;text-align:left;color:gray">WhatsApp</td>
+                    <td style="width:50%; text-align:right">{{emp.WhatsApp}}</td>
+                </tr>-->
+
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Telegram</td>
+                                <td style="width:50%; text-align:right">{{emp.Telegram}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div style=" background:white !important;padding:0;margin-bottom:5px" class="lib-profile">
+                    <div style="color:white;background:#a6a6a6;border-bottom:1px solid #ccc;padding:5px 10px">Address</div>
+                    <div style="padding:5px 10px">
+                        <table style="width:100%;">
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Country</td>
+                                <td style="width:50%; text-align:right">{{emp.Country}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">State</td>
+                                <td style="width:50%; text-align:right">{{emp.State}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">City</td>
+                                <td style="width:50%; text-align:right">{{emp.City}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Postal Code</td>
+                                <td style="width:50%; text-align:right">{{emp.PostalCode}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="width:50%;text-align:left;color:gray">Tel</td>
+                                <td style="width:50%; text-align:right">{{emp.Phone1}}</td>
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;height:30px">
+                                <td style="text-align:left;color:gray" colspan="2">  Address</td>
+
+                            </tr>
+                            <tr style="border-bottom:0px solid #ccc;">
+                                <td style="text-align:left" colspan="2">{{emp.Address}}</td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div style=" background:white !important;padding:0;margin-bottom:5px" class="lib-profile">
+                    <div style="color:white;background:#FF5722;border-bottom:1px solid #ccc;padding:5px 10px">Aircraft Types</div>
+                    <div style="padding:0">
+                        <div ng-repeat="x in types" id="pcer-{{x.Id}}" style="padding-bottom:5px;padding-top:5px;padding-right:2px;padding-left:2px;  border-top:1px solid #bbb" class="lib-cer">
+                            <div>
+
+                                <div style="float:left;width:20%;padding:3px 0 3px 0;margin-left:2px;" ng-class="getRemainClass(x)">
+                                    <div style="text-align:center;font-size:14px;">Rem.</div>
+
+                                    <div style="text-align:center;font-size:20px;">{{x.Remain}}</div>
+                                    <div style="text-align:center;font-size:14px;">Days</div>
+
+                                </div>
+                                <div style="padding-left: 5px;float:left;border-left:1px dashed #ccc">
+                                    <div ng-class="x.titleClass" style="font-size:14px;margin-top:3px;margin-bottom:5px;font-weight:bold">{{x.TypeTitle}}</div>
+                                    <div ng-class="x.titleClass" style="font-size:14px;margin-top:3px;margin-bottom:5px;font-weight:bold">{{x.AcType}}</div>
+                                    <div style="font-size:13px;font-weight:bold"><span style="display:inline-block;width:50px;font-weight:normal">Issued:</span> {{formatDate(x.DateIssue)}}</div>
+                                    <div style="font-size:13px;font-weight:bold;margin-top:3px;"><span style="display:inline-block;width:50px;font-weight:normal">Expires:</span> {{formatDate(x.DateExpire)}}</div>
+
+
+                                </div>
+
+
+                                <div style="clear:both"></div>
+                                <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;" ng-show="x.Description">
+                                    <p style="text-align:left;padding-left:5px;padding-right:5px;padding-top:2px;text-align:justify">{{x.Description}}</p>
+                                    <div style="clear:both"></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style=" background:white !important;padding:0;margin-bottom:5px" class="lib-profile">
+                    <div style="color:white;background:#FF5722;border-bottom:1px solid #ccc;padding:5px 10px">Crew Member Certificate</div>
+                    <div style="padding:0">
+                        <div ng-repeat="x in cmc" id="pcer-{{x.Id}}" style="padding-bottom:5px;padding-top:5px;padding-right:2px;padding-left:2px; border-top:1px solid #bbb" class="lib-cer">
+                            <div  >
+
+                                <div style="float:left;width:20%;padding:3px 0 3px 0;margin-left:2px;" ng-class="getRemainClass(x)">
+                                    <div style="text-align:center;font-size:14px;">Rem.</div>
+
+                                    <div style="text-align:center;font-size:20px;">{{x.Remain}}</div>
+                                    <div style="text-align:center;font-size:14px;">Days</div>
+
+                                </div>
+                                <div style="padding-left: 5px;float:left;border-left:1px dashed #ccc">
+                                    <div ng-class="x.titleClass" style="font-size:14px;margin-top:3px;margin-bottom:5px;font-weight:bold">{{x.TypeTitle}}</div>
+                                    <div ng-class="x.titleClass" style="font-size:14px;margin-top:3px;margin-bottom:5px;font-weight:bold">
+                                        {{x.EmployedBy}}
+                                        <span style="display:inline-block;margin-left:5px;font-weight:normal" ng-show="x.Occupation">({{x.Occupation}})</span>
+                                    </div>
+                                    <div style="font-size:13px;font-weight:bold"><span style="display:inline-block;width:50px;font-weight:normal">Issued:</span> {{formatDate(x.DateIssue)}}</div>
+                                    <div style="font-size:13px;font-weight:bold;margin-top:3px;"><span style="display:inline-block;width:50px;font-weight:normal">Expires:</span> {{formatDate(x.DateExpire)}}</div>
+
+
+                                </div>
+
+
+                                <div style="clear:both"></div>
+                                <div style="text-align:center;font-size:13px;border-top:1px dashed #ccc;margin:5px;padding-top:5px;" ng-show="x.Description">
+                                    <p style="text-align:left;padding-left:5px;padding-right:5px;padding-top:2px;text-align:justify">{{x.Description}}</p>
+                                    <div style="clear:both"></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="rowx footer app-footer" ng-include="'app/views/footer.html'" ng-init="type = 'profile';" style="padding:0;flex:0 0 45px"></div>
+    </div>
+
+
+
+    <div id="popup_profile" dx-popup="popup_profile">
+        <div dx-scroll-view="{height:'100%'}">
+            <div class="dx-border">
+                <div class="margin-bottom-5 padding-7">
+                    <label>Rank</label>
+                    <div dx-select-box="sb_group" dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required',   }]}"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Home Base</label>
+                    <div dx-select-box="sb_Base" dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required',   }]}"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12  margin-bottom-5 padding-7">
+                    <label>First Name</label>
+                    <div dx-text-box="txt_FirstName" dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Last Name</label>
+                    <div dx-text-box="txt_LastName" dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>National Code</label>
+                    <div dx-text-box="txt_nid" class="center ltr " dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Gender</label>
+                    <div dx-select-box="sb_Sex" dx-validator="{validationGroup:'profileupd',  validationRules: [{ type: 'required'}]}"></div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Birth Date</label>
+                    <div dx-date-box="date_DateBirth" class="center"></div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Email</label>
+                    <div dx-text-box="txt_Email" dx-validator="emailValidationRules"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>LinkedIn</label>
+                    <div dx-text-box="txt_LinkedIn"></div>
+                </div>
+                <!--<div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>WhatsApp</label>
+                    <div dx-text-box="txt_WhatsApp"></div>
+                </div>-->
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Telegram</label>
+                    <div dx-text-box="txt_Telegram"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Passport No</label>
+                    <div dx-text-box="txt_PassportNumber" class="center ltr "></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Passport Expire Date</label>
+                    <div dx-date-box="date_DatePassportExpire" class="center"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Tel</label>
+                    <div dx-text-box="txt_phone" class="center ltr f16"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>City</label>
+                    <div dx-select-box="sb_city"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Postal Code</label>
+                    <div class="center ltr f16" dx-text-box="txt_PostalCode"></div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6  margin-bottom-5 padding-7">
+                    <label>Address</label>
+                    <div dx-text-area="txt_Address"></div>
+                </div>
+
+                <div style="clear:both"></div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div dx-load-panel="loadPanel"></div>
+
+
+</div>

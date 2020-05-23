@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CPApp"
+             x:Class="CPApp.MainPage">
+
+    <!--<StackLayout>
+         
+        <Label Text="Welcome to Xamarin.Forms!" 
+           HorizontalOptions="Center"
+           VerticalOptions="CenterAndExpand" />
+    </StackLayout>-->
+    <Grid x:Name="gridContainer">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+        <Grid  x:Name="gridContainer2" IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+
+            </Grid.RowDefinitions>
+
+            <Label Text="Alert"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"  Grid.Column="0" Grid.Row="0" />
+            <Label Text="Please check your internet connection"  FontSize="Medium" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"  Grid.Column="0" Grid.Row="1" />
+            <Button Text="Refresh"  Grid.Column="0" Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" Clicked="OnButtonClicked"/>
+        </Grid>
+       
+        <ActivityIndicator x:Name="indicator" IsRunning="true" Color="Orange"   VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" />
+
+        
+
+    </Grid>
+
+
+</ContentPage>
